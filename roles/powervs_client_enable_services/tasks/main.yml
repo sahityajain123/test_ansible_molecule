@@ -13,7 +13,7 @@
      path: "{{ bash_file }}"
      regexp: "^(.*){{item}}(.*)$"
      replace: "export {{item}}=http://{{ client_config.squid.squid_server_ip_port }}"
-     force: yes
+#     force: yes
     with_items: 
     - http_proxy
     - https_proxy

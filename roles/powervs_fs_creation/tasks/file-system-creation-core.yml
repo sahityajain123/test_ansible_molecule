@@ -38,17 +38,19 @@
   when: multipath_alias.rc == 1
   
 - name: Get the device dm-X name listing using wwn. 
-  shell: "multipath -ll | grep -B 1 {{ item }} | grep dm- | awk '{print \"/dev/\"${{ count | default(2) }}}' "
+  shell: "multipath -ll | grep -B 1 {{ disk_wwn_list }} | grep dm- | awk '{print \"/dev/\"${{ count | default(2) }}}' "
   register: wwn_dm_list
   with_items: "{{ wwn_list | lower }}"
-
+  loop_control:
+    loop_var: disk_wwn_list
 # Create a list based on multipath output.
 - set_fact: empty_list="{{ empty_list | default([]) }}"
 - set_fact: wwn_to_dm_list="{{ empty_list | default([])  }}"
 - set_fact:
-   wwn_to_dm_list="{{ wwn_to_dm_list | default([]) }} + {{ item.stdout_lines | list|flatten }}"
+   wwn_to_dm_list="{{ wwn_to_dm_list | default([]) }} + {{ disk_multipath.stdout_lines | list|flatten }}"
   loop: "{{ wwn_dm_list.results }}"
-
+  loop_control:
+    loop_var: disk_multipath
 - set_fact: pv_create_list="{{ empty_list | default([])  }}"
 - set_fact: pv_create_list="{{ pv_create_list |  default([]) }}  + ['{{ item }}']"
   with_items: "{{ wwn_to_dm_list |  list|flatten  }}"

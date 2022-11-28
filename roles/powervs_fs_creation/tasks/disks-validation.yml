@@ -6,17 +6,19 @@
 
 # validate each wwn provided with multipath -ll command, for its presence. fail, if any 1 does not match. 
 - name: Validating the wwn values passed 
-  shell: /sbin/multipath -ll | grep {{ item }} 
+  shell: /sbin/multipath -ll | grep {{ disk_validation }} 
   register:  validation_check  
   with_items: "{{ disks_configuration.wwns | lower }}"
   ignore_errors: true
-
+  loop_control:
+    loop_var: disk_validation
 - name: Check for the results 
   fail:
-    msg: "command {{ item.cmd }} failed" 
-  when: item.rc==1
+    msg: "command {{ disk_check.cmd }} failed" 
+  when: disk_check.rc==1
   with_items: "{{ validation_check.results }}"
-
+  loop_control:
+    loop_var: disk_check
 # get count of unique WWN
 - name: Validate number of wwn present 
   set_fact:
@@ -26,9 +28,10 @@
 - set_fact: count_total=0
 - name: Get the total count as provided 
   set_fact: 
-   count_total: "{{ count_total|int +item|int }}" 
+   count_total: "{{ count_total|int +disk_count|int }}" 
   with_items: "{{ disks_configuration.counts }}"
-
+  loop_control:
+    loop_var: disk_count
 - fail:
    msg: "Number of unique  WWN provided = {{ total_wwn }} is not equal to total count {{ count_total }} "
   when:  count_total !=  total_wwn 

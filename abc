@@ -1,0 +1,28 @@
+---
+- import_tasks: generate-slz-config.yml
+- import_tasks: ../../../tasks/ibmcloud_login.yml
+- name: set up SLZ name
+  set_fact:
+    slz_name: "{{ slz_name_pr }}-{{ lookup('ansible.builtin.pipe','date +%Y-%m-%d') }}"
+- name: SLZ deployment
+  shell: ibmcloud catalog install --vl {{ version_locator }} --override-values ../../../slzconfig.json --workspace-name {{ slz_name }}
+  register: out_msg
+  ignore_errors: true
+name: shell commands
+    shell: sleep 1000 && ibmcloud schematics workspace list | grep {{ slz_name }} | awk '{print $2}'
+    register: out_msg
+- name: verify workspace  status every 30 seconds and maximum 30 minutes or until stdout contains string "running"
+  shell: "ibmcloud schematics workspace list | grep {{ slz_name }} | awk '{print $3 }'
+  register: outmsg
+  ignore_errors: yes
+  until: (outmsg.stdout | regex_findall('ACTIVE') | length) == 3
+  retries: 20
+  delay: 60
+- name: Get workspace ID
+  shell: ibmcloud schematics workspace list | grep {{ slz_name }} | awk '{print $2 }'
+  register: out_msg
+- set_fact:
+  workspace_id: "{{ out_msg.stdout }}"  
+  
+- import_tasks: ../../../tasks/extract_workspace_id.yml 
+

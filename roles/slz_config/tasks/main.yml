@@ -1,0 +1,36 @@
+---
+- name: Print all available facts
+  ansible.builtin.debug:
+    var: role_path
+- name: Print all available fact
+  ansible.builtin.debug:
+    var: role_path
+- name: remove file 
+  file:
+   path: "{{ role_path }}/slzconfig.json"
+   state: absent
+- name: Copy files
+  ansible.builtin.copy:
+    src: "{{ role_path }}/slzconfig.json.template"
+    dest: "{{ role_path }}/slzconfig.json"
+    mode: '0777'
+- name: Modify slz_config file
+  ansible.builtin.replace:
+    path: "{{ role_path }}/slzconfig.json"
+    regexp: slz_name
+    replace: "{{ slz_name }}"
+- name: Modify slz_config file
+  ansible.builtin.replace:
+    path: "{{ role_path }}/slzconfig.json"
+    regexp: slz_prefix
+    replace: "{{ slz_prefix }}"
+- name: Modify slz_config file
+  ansible.builtin.replace:
+    path: "{{ role_path }}/slzconfig.json"
+    regexp: slz_ssh_key
+    replace: "{{ slz_ssh_key }}"
+- name: Modify slz_config file
+  ansible.builtin.replace:
+    path: "{{ role_path }}/slzconfig.json"
+    regexp: slz_region
+    replace: "{{ slz_region }}"

@@ -41,9 +41,9 @@
 - name: Run rescan-scsi-bus.sh command to check for new devices 
   shell: /usr/bin/rescan-scsi-bus.sh -a -c -v
 
-- name: Validate Disk ids passed when disks_configuration variables is of dictionary type
-  import_tasks: disks-validation.yml
-  when: disks_configuration | type_debug == "dict"
+#- name: Validate Disk ids passed when disks_configuration variables is of dictionary type
+#  import_tasks: disks-validation.yml
+#  when: disks_configuration | type_debug == "dict"
 
 - name: Create filesystem when disks_configuration variables is a dictionary 
   import_tasks: disks-dict2list.yml
