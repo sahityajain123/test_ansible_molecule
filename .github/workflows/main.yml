@@ -25,7 +25,8 @@ jobs:
         run: |
           find . -name molecule.yml
           echo "${{ secrets.SAH_PRIVATE_KEY }}" > ./sahityajain123/test_ansible_molecule/ssh-private-key
-          ls ./sahityajain123/test_ansible_molecule/ssh-private-key
+          chmod 600 ./sahityajain123/test_ansible_molecule/ssh-private-key
+          ls -l /home/runner/work/test_ansible_molecule/test_ansible_molecule/sahityajain123/test_ansible_molecule/ssh-private-key 
           cd ./sahityajain123/test_ansible_molecule/
           pwd
           molecule --debug test
