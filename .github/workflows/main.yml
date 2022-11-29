@@ -23,12 +23,13 @@ jobs:
           python3 -m pip install molecule ansible-core
       - name: Test with molecule
         run: |
-          find . -name molecule.yml
-          echo "${{ secrets.SAH_PRIVATE_KEY }}" > ./sahityajain123/test_ansible_molecule/ssh-private-key
-          cat ./sahityajain123/test_ansible_molecule/ssh-private-key
-          chmod 600 ./sahityajain123/test_ansible_molecule/ssh-private-key
-          ls -l /home/runner/work/test_ansible_molecule/test_ansible_molecule/sahityajain123/test_ansible_molecule/ssh-private-key 
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/private.key
+          sudo chmod 600 ~/.ssh/private.key
+          ls -l ~/.ssh/private.key
+          ssh -i ~/.ssh/private.key  -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234" root@10.51.0.12 ls
           cd ./sahityajain123/test_ansible_molecule/
-          ssh -i /home/runner/work/test_ansible_molecule/test_ansible_molecule/sahityajain123/test_ansible_molecule/ssh-private-key  -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234" root@10.51.0.12 ls
-          pwd
           molecule --debug test
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SAH_PRIVATE_KEY}}
