@@ -9,7 +9,7 @@ provisioner:
   name: ansible
   inventory:
     links:
-#      hosts: ../../hosts
+      hosts: ../../hosts
       host_vars: ../../host_vars/
 verifier:
   name: ansible
