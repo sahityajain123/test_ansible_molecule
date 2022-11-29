@@ -5,10 +5,10 @@
   tasks:
     - name: "Include powervs_client_enable_services"
       ansible.builtin.include_role:
-        name: "ansible-power-linux-sap/roles/{{ item }}"
+        name: "test_ansible_molecule/roles/{{ item }}"
       with_items:
       - powervs_client_enable_services
       - powervs_install_services
       - powervs_fs_creation
-#      - powervs_swap_creation
+      - powervs_swap_creation
       - powervs_prepare_rhel_sap
