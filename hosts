@@ -1,0 +1,6 @@
+[nodes]
+10.51.0.12
+
+[nodes:vars]
+ansible_ssh_common_args='-i ~/.ssh/ssh_private'
+ansible_user=root
