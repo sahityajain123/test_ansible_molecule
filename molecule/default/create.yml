@@ -32,7 +32,3 @@
               {{ instance_conf | to_json | from_json | to_yaml }}
             dest: "{{ molecule_instance_config }}"
             mode: 0600
-        - name: create file
-          ansible.builtin.file:
-            path: "/tmp/ssh_key"
-            content: "{{ secrets.SAH_PRIVATE_KEY }}"

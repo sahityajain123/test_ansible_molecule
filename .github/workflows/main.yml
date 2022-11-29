@@ -23,13 +23,9 @@ jobs:
           python3 -m pip install molecule ansible-core
       - name: Test with molecule
         run: |
-          chmod -R 777 `pwd`
-          echo "::i am directory; $env.GITHUB_WORKSPACE"
-          echo "molecule test"
-          which molecule 
-          whoami
-          pwd
-          ls -Rl
           find . -name molecule.yml
           cd ./sahityajain123/test_ansible_molecule/
+          pwd
+          echo ${{ secrets.SAH_PRIVATE_KEY }} > ./sahityajain123/test_ansible_molecule/ssh-private-key
+          ls ./sahityajain123/test_ansible_molecule/ssh-private-key
           molecule --debug test
