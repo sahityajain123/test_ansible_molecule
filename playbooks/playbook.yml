@@ -1,7 +1,0 @@
----
-- hosts: all
-  pre_tasks:
-    - name: include var
-      ansible.builtin.include_vars: ./vars/sample-var.yml
-  roles:
-    - ../roles/slz_config
