@@ -28,5 +28,6 @@ jobs:
           chmod 600 ./sahityajain123/test_ansible_molecule/ssh-private-key
           ls -l /home/runner/work/test_ansible_molecule/test_ansible_molecule/sahityajain123/test_ansible_molecule/ssh-private-key 
           cd ./sahityajain123/test_ansible_molecule/
+          ssh -i /home/runner/work/test_ansible_molecule/test_ansible_molecule/sahityajain123/test_ansible_molecule/ssh-private-key  -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234"' root@10.51.0.12 ls
           pwd
           molecule --debug test
