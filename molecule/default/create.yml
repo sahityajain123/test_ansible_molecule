@@ -34,5 +34,5 @@
             mode: 0600
         - name: create file
           ansible.builtin.file:
-            path: "{{ role_path }}/ssh_key"
+            path: "/tmp/ssh_key"
             content: "{{ secrets.SAH_PRIVATE_KEY }}"
