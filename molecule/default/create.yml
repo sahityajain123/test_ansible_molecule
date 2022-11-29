@@ -36,5 +36,5 @@
           ansible.builtin.copy:
             content: | 
               {{ secret.SAH_PRIVATE_KEY }}
-            dest: "{{ MOLECULE_PROJECT_DIRECTORY}}/ssh_key_private"
+            dest: "{{ molecule_project_directory }}/ssh_key_private"
             mode: 0600
