@@ -27,11 +27,14 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/private.key
           sudo chmod 600 ~/.ssh/private.key
           ls -l ~/.ssh/private.key
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           eval `ssh-agent -s`
           ssh-add ~/.ssh/private.key
-          ssh -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234" root@10.51.0.12 ls
+          ssh -i ~/.ssh/private.key -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234" root@10.51.0.12 ls
           cd ./sahityajain123/test_ansible_molecule/
           molecule --debug test
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.SAH_PRIVATE_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+          
