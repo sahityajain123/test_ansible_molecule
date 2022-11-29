@@ -27,6 +27,7 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/private.key
           sudo chmod 600 ~/.ssh/private.key
           ls -l ~/.ssh/private.key
+          eval `ssh-agent -s`
           ssh-add ~/.ssh/private.key
           ssh -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234" root@10.51.0.12 ls
           cd ./sahityajain123/test_ansible_molecule/
