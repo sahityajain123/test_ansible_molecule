@@ -1,7 +1,6 @@
 ---
 # this task reads the variable passed to execute ansible roles, and manipulate them to be passed to fs_creation role, in a single dictionary for each name variable passed in variable list. 
 # this is an intermediate task, and is required for converting dictionary type disks_configuration to a list type for filesystem creation. It is not required if disks_configuration type is a list . 
-
 - name: For loop, to manipulate pv listing. #Use this loop to distribute pvs for names provided and use them later for filesystem creation.
   shell: i=0; while [[ $i -lt {{ item.1 }} ]]; do echo {{ item.0 }} ; let i=i+1; done
   register: loop_for_wwn
@@ -9,7 +8,7 @@
   - "{{ disks_configuration.names | map('trim') | list }}"
   - "{{  disks_configuration.counts | map('trim') | list }}"
 - set_fact:
-    tmp_wwn_list="{{ tmp_wwn_list | default([]) }} + {{ item.stdout_lines | list|flatten }}"
+    tmp_wwn_list="{{ tmp_wwn_list }} + {{ item.stdout_lines | list|flatten }}"
   loop: "{{ loop_for_wwn.results }}"
 - name: tmp_wwn_list
   debug: var=tmp_wwn_list

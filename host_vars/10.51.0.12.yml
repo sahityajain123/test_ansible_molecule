@@ -1,3 +1,4 @@
+tmp_wwn_list: []
 disks_configuration: {
 counts: [1,1,1],
 names: [data,log,shared],
@@ -24,3 +25,4 @@ client_config : {
       dns_server_ip : '10.20.10.4'
     }
   }
+
