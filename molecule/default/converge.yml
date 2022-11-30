@@ -1,14 +1,3 @@
 ---
 - name: Converge
-  hosts: all 
-  gather_facts: true 
-  tasks:
-    - name: "Include powervs_client_enable_services"
-      ansible.builtin.include_role:
-        name: "test_ansible_molecule/roles/{{ item }}"
-      with_items:
-      - powervs_client_enable_services
-      - powervs_install_services
-      - powervs_fs_creation
-      - powervs_swap_creation
-      - powervs_prepare_rhel_sap
+  import_playbook: ../../playbooks/powervs-rhel.yml
