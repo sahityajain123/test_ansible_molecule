@@ -11,6 +11,7 @@
 - set_fact:
     tmp_wwn_list="{{ tmp_wwn_list | default([]) }} + {{ item.stdout_lines | list|flatten }}"
   loop: "{{ loop_for_wwn.results }}"
+- debug: var=tmp_wwn_list
 
 # Create a dict with pv and its type
 - set_fact:
@@ -18,6 +19,7 @@
   with_together:
   - "{{ disks_configuration.wwns | map('trim') | list  }}"
   - "{{ tmp_wwn_list }}"
+- debug: var=pv_listing_dm
 
 - copy: content="{{ pv_listing_dm  }}" dest=/root/tmp_file
 - shell: "cat /root/tmp_file | tr [{},] '\n' | tee /root/tmp_file_mod"
@@ -28,7 +30,7 @@
 - set_fact:
     wwn_list="{{ wwn_list | default([]) }} + {{ item.stdout_lines | list|flatten }}"
   loop: "{{ tmp_wwn_var.results }}"
-
+- debug: var=wwn_list
 # Create stripes list dict
 - set_fact:
      disks_config_mod: "{{ disks_config_mod | default([]) + [{ 'name': item.0, 'count' : item.1, 'path' : item.2, 'wwns' : item.3 }] }}"
@@ -37,6 +39,7 @@
   - "{{ disks_configuration.counts | map('trim') | list }}"
   - "{{ disks_configuration.paths | map('trim') | list }}"
   - "{{ wwn_list }}"
+- debug: var=disks_config_mod
 
 # execution of fs_creation role starts here. Iterate for each list created above
 - include_tasks: file-system-creation-core.yml 

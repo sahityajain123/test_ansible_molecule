@@ -34,7 +34,7 @@ jobs:
           ssh-add ~/.ssh/private.key
           ssh -i ~/.ssh/private.key -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234" root@10.51.0.12 ls
           cd ./sahityajain123/test_ansible_molecule/
-          molecule --debug test
+          molecule test
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.SAH_PRIVATE_KEY}}
