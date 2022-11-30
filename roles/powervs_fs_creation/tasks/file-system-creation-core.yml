@@ -50,7 +50,7 @@
   loop: "{{ wwn_dm_list.results }}"
 
 - set_fact: pv_create_list="{{ empty_list | default([])  }}"
-- set_fact: pv_create_list="{{ pv_create_list |  default([]) + ['{{ item }}']"
+- set_fact: pv_create_list="{{ pv_create_list |  default([]) + ['{{ item }}'] }}"
   with_items: "{{ wwn_to_dm_list | list  }}"
 
 # Creating volume group. 
