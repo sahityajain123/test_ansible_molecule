@@ -17,7 +17,7 @@
    pv_listing_dm: "{{ pv_listing_dm | default({}) |  combine({ item.0: item.1  })}}"
   with_together:
   - "{{ disks_configuration.wwns | map('trim') | list  }}"
-  - "{{ tmp_wwn_list | map('trim') | list  }}"
+  - "{{ tmp_wwn_list }}"
 - debug: var=pv_listing_dm
 
 - copy: content="{{ pv_listing_dm  }}" dest=/root/tmp_file
