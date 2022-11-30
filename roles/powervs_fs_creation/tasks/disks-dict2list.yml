@@ -2,13 +2,13 @@
 # this task reads the variable passed to execute ansible roles, and manipulate them to be passed to fs_creation role, in a single dictionary for each name variable passed in variable list. 
 # this is an intermediate task, and is required for converting dictionary type disks_configuration to a list type for filesystem creation. It is not required if disks_configuration type is a list . 
 - name: For loop, to manipulate pv listing. #Use this loop to distribute pvs for names provided and use them later for filesystem creation.
-  shell: i=0; while [[ $i -lt {{ item.1 }} ]]; do echo {{ item.0 }} ; let i=i+1; done
+  raw: i=0; while [[ $i -lt {{ item.1 }} ]]; do echo {{ item.0 }} ; let i=i+1; done
   register: loop_for_wwn
   with_together:
   - "{{ disks_configuration.names | map('trim') | list }}"
   - "{{  disks_configuration.counts | map('trim') | list }}"
 - set_fact:
-    tmp_wwn_list="{{ tmp_wwn_list }} + {{ item.stdout_lines | list|flatten }}"
+    tmp_wwn_list="{{ tmp_wwn_list }} + {{ item.stdout_lines | list  }}"
   loop: "{{ loop_for_wwn.results }}"
 - name: tmp_wwn_list
   debug: var=tmp_wwn_list
@@ -22,8 +22,8 @@
 - debug: var=pv_listing_dm
 
 - copy: content="{{ pv_listing_dm  }}" dest=/root/tmp_file
-- shell: "cat /root/tmp_file | tr [{},] '\n' | tee /root/tmp_file_mod"
-- shell: "cat /root/tmp_file_mod | sed 's/ //g' | sed 's/\"//g' | grep {{ item }} | sed 's/:{{ item }}//g' | tr '\n' ',' | sed 's/,$//g'"
+- raw: "cat /root/tmp_file | tr [{},] '\n' | tee /root/tmp_file_mod"
+- raw: "cat /root/tmp_file_mod | sed 's/ //g' | sed 's/\"//g' | grep {{ item }} | sed 's/:{{ item }}//g' | tr '\n' ',' | sed 's/,$//g'"
   register: tmp_wwn_var
   loop: "{{ disks_configuration.names | map('trim') | list }}"
 
