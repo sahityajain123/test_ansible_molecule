@@ -12,6 +12,7 @@
   loop: "{{ loop_for_wwn.results }}"
 - name: tmp_wwn_list
   debug: var=tmp_wwn_list
+- debug: var="{{tmp_wwn_list | type_debug }}"
 # Create a dict with pv and its type
 - set_fact:
    pv_listing_dm: "{{ pv_listing_dm | default({}) |  combine({ item.0: item.1  })}}"
