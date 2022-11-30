@@ -12,7 +12,8 @@
     tmp_wwn_list="{{ tmp_wwn_list | default([]) }} + {{ item.stdout_lines | list|flatten }}"
   loop: "{{ loop_for_wwn.results }}"
 - debug: var=tmp_wwn_list
-
+- debug: var=loop_for_wwn
+- debug: var=loop_for_wwn.results
 # Create a dict with pv and its type
 - set_fact:
    pv_listing_dm: "{{ pv_listing_dm | default({}) |  combine({ item.0: item.1  })}}"
