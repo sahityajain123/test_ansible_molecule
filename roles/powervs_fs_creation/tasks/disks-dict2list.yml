@@ -8,8 +8,9 @@
   - "{{ disks_configuration.names | map('trim') | list }}"
   - "{{  disks_configuration.counts | map('trim') | list }}"
 - set_fact:
-    tmp_wwn_list="{{ tmp_wwn_list }} + {{ item.stdout_lines | list  }}"
+    tmp_wwn_list="{{ tmp_wwn_list | default([]) + item.stdout_lines }}"
   loop: "{{ loop_for_wwn.results }}"
+- debug: var=loop_for_wwn.results
 - name: tmp_wwn_list
   debug: var=tmp_wwn_list
 - debug: var="{{tmp_wwn_list | type_debug }}"
@@ -28,7 +29,7 @@
   loop: "{{ disks_configuration.names | map('trim') | list }}"
 
 - set_fact:
-    wwn_list="{{ wwn_list | default([]) }} + {{ item.stdout_lines | list|flatten }}"
+    wwn_list="{{ wwn_list | default([]) + item.stdout_lines }}"
   loop: "{{ tmp_wwn_var.results }}"
 - debug: var=wwn_list
 # Create stripes list dict
