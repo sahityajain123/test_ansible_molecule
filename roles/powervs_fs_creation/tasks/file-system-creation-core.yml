@@ -4,7 +4,8 @@
 # Converting comma separated wwn list passed as variable to a list of wwns
 - name: Convert a string separated with commas into a list of elements
   set_fact: wwn_list="{{ file_system.wwns.split(',') }}"
-
+- debug: var=file_system
+- debug: var=wwn_list
 # stopping multipathd daemon, will restart after rescan. Making sure, that it is ran only once per execution, by introducing multipathd_executed variable and defining it after multipathd is started 
 - name: Ensure multipathd daemon is stopped 
   service:
@@ -48,11 +49,11 @@
 - set_fact:
    wwn_to_dm_list="{{ wwn_to_dm_list | default([]) +  item.stdout_lines  }}"
   loop: "{{ wwn_dm_list.results }}"
-
+- debug: var=wwn_to_dm_list
 - set_fact: pv_create_list="{{ empty_list | default([])  }}"
 - set_fact: pv_create_list="{{ pv_create_list |  default([]) + ['{{ item }}'] }}"
   with_items: "{{ wwn_to_dm_list | list  }}"
-
+- debug: var=pv_create_list
 # Creating volume group. 
 - name: Create LVM volume group {{ file_system.name }}vg on {{pv_create_list}}
   lvg:
