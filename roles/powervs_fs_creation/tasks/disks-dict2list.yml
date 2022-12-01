@@ -7,6 +7,7 @@
   with_together:
   - "{{ disks_configuration.names | map('trim') | list }}"
   - "{{  disks_configuration.counts | map('trim') | list }}"
+  tag: molecule-idempotence-notest
 - set_fact:
     tmp_wwn_list="{{ tmp_wwn_list | default([]) + item.stdout_lines }}"
   loop: "{{ loop_for_wwn.results }}"
@@ -23,11 +24,13 @@
 - debug: var=pv_listing_dm
 
 - copy: content="{{ pv_listing_dm  }}" dest=/root/tmp_file
+  tag: molecule-idempotence-notest
 - raw: "cat /root/tmp_file | tr [{},] '\n' | tee /root/tmp_file_mod"
+  tag: molecule-idempotence-notest
 - raw: "cat /root/tmp_file_mod | sed 's/ //g' | sed 's/\"//g' | grep {{ item }} | sed 's/:{{ item }}//g' | tr '\n' ',' | sed 's/,$//g'"
   register: tmp_wwn_var
   loop: "{{ disks_configuration.names | map('trim') | list }}"
-
+  tag: molecule-idempotence-notest
 - set_fact:
     wwn_list="{{ wwn_list | default([]) + item.stdout_lines }}"
   loop: "{{ tmp_wwn_var.results }}"
@@ -57,4 +60,4 @@
   with_items:
   - /root/tmp_file
   - /root/tmp_file_mod 
-  
+  tag: molecule-idempotence-notest
