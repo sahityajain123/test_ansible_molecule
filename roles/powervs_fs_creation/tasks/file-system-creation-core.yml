@@ -12,18 +12,19 @@
    name: multipathd
    state: stopped
   when: multipathd_executed is not defined  
-
+  changed_when: false
 # before starting with filesystem creation, lets scan the for any new disk that may have been added to LPAR 
 - name: Run rescan-scsi-bus.sh command to check for new devices 
   shell: /usr/bin/rescan-scsi-bus.sh -a -c -v
   when: multipathd_executed is not defined
-  tags: molecule-idempotence-notest 
+  changed_when: false 
 # restart multipathd after rescan is completed.
 - name: Ensure multipathd daemon is enabled 
   service:
    name: multipathd
    state: started 
   when: multipathd_executed is not defined
+  changed_when: false
 - set_fact: 
    multipathd_executed: 1 
 
@@ -32,7 +33,7 @@
   shell: grep "user_friendly_names no" /etc/multipath.conf
   register: multipath_alias
   ignore_errors: yes
-  tags: molecule-idempotence-notest  
+  changed_when: false  
 - name: Setting count variable based on multipath aliasing is enabled or not
   set_fact:
    count: 3
@@ -42,7 +43,7 @@
   shell: "multipath -ll | grep -B 1 {{ item }} | grep dm- | awk '{print \"/dev/\"${{ count | default(2) }}}' "
   register: wwn_dm_list
   with_items: "{{ wwn_list | lower }}"
-  tags: molecule-idempotence-notest
+  changed_when: false
 # Create a list based on multipath output.
 - set_fact: empty_list="{{ empty_list | default([]) }}"
 - set_fact: wwn_to_dm_list="{{ empty_list | default([])  }}"

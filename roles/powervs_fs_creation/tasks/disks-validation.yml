@@ -3,14 +3,14 @@
  
 - name: Running rescan command 
   shell: /usr/bin/rescan-scsi-bus.sh -a -c -v
-  tag: molecule-idempotence-notest
+  changed_when: false
 # validate each wwn provided with multipath -ll command, for its presence. fail, if any 1 does not match. 
 - name: Validating the wwn values passed 
   shell: /sbin/multipath -ll | grep {{ item }} 
   register:  validation_check  
   with_items: "{{ disks_configuration.wwns | lower }}"
   ignore_errors: true
-  tag: molecule-idempotence-notest
+  changed_when: false
 - name: Check for the results 
   fail:
     msg: "command {{ item.cmd }} failed" 
