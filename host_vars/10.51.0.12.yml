@@ -1,10 +1,11 @@
 sap_solution: HANA
-disks_configuration: {
-counts: [1,1,1],
-names: [data,log,shared],
-paths: [/hana/data,/hana/log,/hana/shared],
-wwns: ["6005076810810198800000000000D4a5","6005076810810198800000000000D4a6","6005076810810198800000000000D4a7"]
-}
+sap_domain: sap.com
+#disks_configuration: {
+#counts: [1,1,1],
+#names: [data,log,shared],
+#paths: [/hana/data,/hana/log,/hana/shared],
+#wwns: ["6005076810810198800000000000D4a5","6005076810810198800000000000D4a6","6005076810810198800000000000D4a7"]
+#}
 client_config : {
     squid : {
       enable : false,
