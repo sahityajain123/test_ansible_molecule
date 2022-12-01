@@ -1,3 +1,4 @@
+sap_solution: HANA
 disks_configuration: {
 counts: [1,1,1],
 names: [data,log,shared],
