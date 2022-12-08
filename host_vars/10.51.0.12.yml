@@ -20,7 +20,7 @@ client_config : {
   }
 sap_solution: HANA
 sap_domain: sap.com
-disks_configuration: {
+risks_configuration: {
 counts: [1,1,1],
 names: [data,log,shared],
 paths: [/hana/data,/hana/log,/hana/shared],
