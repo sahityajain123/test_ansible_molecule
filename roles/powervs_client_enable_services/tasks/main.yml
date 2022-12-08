@@ -105,7 +105,7 @@
       state: directory
       mode: '0755'
     with_items: "{{ client_config.nfs.nfs_client_path.split(';') }}"
-   
+    changed_when: false 
 # Mounting NFS directory. server_path, should be "server_name":"source_path"
   - name: Mount NFS directory
     mount:
