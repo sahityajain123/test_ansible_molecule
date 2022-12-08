@@ -1,6 +1,6 @@
 [nodes]
-10.51.0.12
+10.112.1.144
 
 [nodes:vars]
-ansible_ssh_common_args='-i ~/.ssh/ssh-private-key  -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234"'
+ansible_ssh_common_args='-i ~/.ssh/private.key  -o  ProxyCommand="ssh -W %h:%p root@159.23.91.234"'
 ansible_user=root
