@@ -28,11 +28,9 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/private.key
           sudo chmod 600 ~/.ssh/private.key
-          ls -l ~/.ssh/private.key
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           eval `ssh-agent -s`
           ssh-add ~/.ssh/private.key
-          ssh -i  ~/.ssh/private.key -A -o ServerAliveInterval=60 -o ServerAliveCountMax=600 -o ProxyCommand="ssh -W %h:%p root@159.23.91.234" root@10.112.1.144 ls
           cd ./sahityajain123/test_ansible_molecule/
           molecule test
         shell: bash
